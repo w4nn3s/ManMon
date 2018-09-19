@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Renci.SshNet;
+//using Renci.SshNet;
 using System.Diagnostics;
 
 namespace ManMon
@@ -160,6 +160,7 @@ namespace ManMon
             Parser.Parser parser = new Parser.Parser();
 
             parser.ReadHosts();
+            parser.ReadPorts();
         }
     }
 }

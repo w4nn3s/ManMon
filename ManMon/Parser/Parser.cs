@@ -10,6 +10,14 @@ namespace ManMon.Parser
     {
         string[][] hostinfo = null;
         Port[] ports = null;
+        Switch[] switches = null;
+        public int nswitches = 0;
+        int nports = 0;
+
+        public void init()
+        {
+             Parser p = new Parser();
+        }
 
 
         public void ReadHosts()
@@ -33,17 +41,44 @@ namespace ManMon.Parser
             }
         }
 
-        private void ReadPorts()
+        public void ReadPorts()
         {
+            int startports = 0;
             for (int i = 0; i < hostinfo.Count(); i++)
             {
                 if (string.Compare(hostinfo[i][1], "s") == 0)
                 {
-                    string filename = hostinfo[i][0] + "intstatus.txt";
+                    switches[nswitches] = new Switch();
+                    //switches[nswitches].hostname = hostinfo[i][0];
+                    nswitches++;
+                    switches[nswitches].ID = nswitches;
+                    
+
+                    string filename = hostinfo[i][0] + "_intstatus.txt";
                     string[] lines = System.IO.File.ReadAllLines(@"output\intstatus\" + filename);
                     foreach (string line in lines)
                     {
-                        Console.WriteLine(line + "\n");
+
+                        if(line.Contains('#'))
+                        {
+                            startports = 0;
+                        }
+
+                        if(startports==1)
+                        {
+                            ports[nports] = new Port();
+                            ports[nports].Portnr =line.Split(' ')[0];
+                            Console.WriteLine(ports[nports].Portnr);
+                            nports++;
+                        }
+
+                        if (line.Contains("Duplex")&&(line.Contains("Speed")))
+                        {
+                            startports = 1;
+                        }
+
+                            Console.WriteLine(line);
+
                     }
                 }
             }

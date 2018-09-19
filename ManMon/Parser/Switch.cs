@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace ManMon.Parser
 {
-    class Switch
+    public class Switch
     {
-        int ID = 0;
-        string hostname = null;
-        string IPadd = null;
-        string ver = null;
-        string uptime = null;
+        public int ID = 0;
+        public string hostname = null;
+        public string IPadd = null;
+        public string ver = null;
+        public string uptime = null;
+
+
     }
 }
