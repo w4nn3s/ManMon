@@ -11,6 +11,7 @@ namespace ManMon.Parser
         public int ID = 0;
         public int SwitchID = 0;
         public string Portnr = null;
+        public string PortDesc = null;
         public string Status = null;
         public string Vlan = null;
     }

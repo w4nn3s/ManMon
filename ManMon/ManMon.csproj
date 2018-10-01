@@ -54,7 +54,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Parser\Host.cs" />
+    <Compile Include="Parser\Client.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Parser\Port.cs" />
     <Compile Include="Parser\Portuse.cs" />

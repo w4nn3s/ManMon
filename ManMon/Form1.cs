@@ -110,7 +110,7 @@ namespace ManMon
                         pass = hostinfo[y][3];
                     }
 
-                    //Execute only if host is enabled and is a switch
+                    //Execute only if host is enabled and is a router
                     if ((string.Compare(hostinfo[y][4], "1") == 0) && string.Compare(hostinfo[y][1], "r") == 0)
                     {
                         ProcessStartInfo startInfo = new ProcessStartInfo(@"C:\Users\wcolman\source\repos\accumulator\accumulator\bin\Debug\accumulator.exe");
@@ -121,27 +121,9 @@ namespace ManMon
                 }
             }
 
-            //btnCollect.Text=
-
-            /*
-            System.Threading.Thread.Sleep(4000);
-            progress1.Value = 20;
-            System.Threading.Thread.Sleep(4000);
-            progress1.Value = 40;
-            System.Threading.Thread.Sleep(4000);
-            progress1.Value = 60;
-            System.Threading.Thread.Sleep(4000);
-            progress1.Value = 80;
-            System.Threading.Thread.Sleep(4000);
-            progress1.Value = 100;
-            */
             btnCollect.Enabled = true;
             btnCollect.Text = "Collect";
 
-            //System.Threading.Thread.Sleep(500);
-           // progress1.Value = 0;
-            //progress1.Visible = false;
-            //execute all router commands
 
 
 
@@ -159,8 +141,50 @@ namespace ManMon
         {
             Parser.Parser parser = new Parser.Parser();
 
+            parser.ReadOUI();
             parser.ReadHosts();
             parser.ReadPorts();
+            lblnswitches.Text = parser.nswitches.ToString() + " switches loaded";
+            parser.ReadClients();
+
+            Array.Resize(ref parser.switches, parser.nswitches);
+            Array.Resize(ref parser.ports, parser.nports);
+            Array.Resize(ref parser.clients, parser.nclients);
+            Array.Resize(ref parser.usage, parser.nusage);
+
+            parser.AddIPs();
+
+
+
+            System.IO.StreamWriter file = new System.IO.StreamWriter(@"out.txt");
+            for (int i = 1; i < parser.nclients; i++)
+            {
+                String switchname = null;
+                String portname = null;
+                int PortUseID = Array.FindIndex(parser.usage, obj => obj.ClientID == parser.clients[i].ID);
+                int PortID = Array.FindIndex(parser.ports, obj => obj.ID == parser.usage[PortUseID].PortID);
+
+                int CLIENTID = parser.clients[i].ID;
+                string MACADD = parser.clients[i].MACadd;
+                string IP = parser.clients[i].IPadd;
+                IP = string.IsNullOrEmpty(IP) ? "\t" : IP;
+                string OUI = parser.clients[i].guesstimac;
+                string SWNAAM = parser.switches[parser.ports[PortID].SwitchID].hostname;
+                string PORTNAME = parser.ports[PortID].Portnr;
+
+
+                //Console.WriteLine(parser.clients[i].ID + " - " + parser.clients[i].MACadd + " --- " + parser.clients[i].IPadd + " --- " + parser.clients[i].guesstimac + " --- " + parser.switches[parser.ports[PortID].SwitchID].hostname + " --- " + parser.ports[PortID].Portnr );
+                //file.WriteLine(parser.clients[i].ID + " - " + parser.clients[i].MACadd + " \t " + parser.clients[i].IPadd + " \t " + parser.clients[i].guesstimac + " \t " + parser.switches[parser.ports[PortID].SwitchID].hostname + " \t " + parser.ports[PortID].Portnr);
+                file.WriteLine(CLIENTID + " - " + MACADD + " \t " + IP + " \t " + SWNAAM + " \t " + PORTNAME  + "\t\t" + OUI);
+
+            }
+
+
+
+
+
+
+
         }
     }
 }

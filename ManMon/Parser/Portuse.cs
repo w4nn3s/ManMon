@@ -8,9 +8,8 @@ namespace ManMon.Parser
 {
     class Portuse
     {
-        int ID = 0;
-        int SwitchID = 0;
-        string PortName = null;
-        string PortDesc = null;
+        public int ID = 0;
+        public int PortID = -1;
+        public int ClientID = -1;
     }
 }

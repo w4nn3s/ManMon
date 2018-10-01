@@ -35,11 +35,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnParse = new System.Windows.Forms.Button();
+            this.lblnswitches = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnCollect
             // 
-            this.btnCollect.Location = new System.Drawing.Point(169, 102);
+            this.btnCollect.Location = new System.Drawing.Point(110, 102);
             this.btnCollect.Name = "btnCollect";
             this.btnCollect.Size = new System.Drawing.Size(100, 23);
             this.btnCollect.TabIndex = 4;
@@ -90,7 +91,7 @@
             // 
             // btnParse
             // 
-            this.btnParse.Location = new System.Drawing.Point(276, 102);
+            this.btnParse.Location = new System.Drawing.Point(216, 102);
             this.btnParse.Name = "btnParse";
             this.btnParse.Size = new System.Drawing.Size(75, 23);
             this.btnParse.TabIndex = 6;
@@ -98,11 +99,21 @@
             this.btnParse.UseVisualStyleBackColor = true;
             this.btnParse.Click += new System.EventHandler(this.btnParse_Click);
             // 
+            // lblnswitches
+            // 
+            this.lblnswitches.AutoSize = true;
+            this.lblnswitches.Location = new System.Drawing.Point(340, 143);
+            this.lblnswitches.Name = "lblnswitches";
+            this.lblnswitches.Size = new System.Drawing.Size(92, 13);
+            this.lblnswitches.TabIndex = 7;
+            this.lblnswitches.Text = "0 switches loaded";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(442, 157);
+            this.Controls.Add(this.lblnswitches);
             this.Controls.Add(this.btnParse);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -126,6 +137,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnParse;
+        private System.Windows.Forms.Label lblnswitches;
     }
 }
 
