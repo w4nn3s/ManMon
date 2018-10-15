@@ -11,8 +11,8 @@ namespace ManMon.Parser
         string[][] hostinfo = null;
         public Port[] ports = new Port[30000];
         public Switch[] switches = new Switch[5000];
-        public Client[] clients = new Client[5000];
-        public Portuse[] usage = new Portuse[5000];
+        public Client[] clients = new Client[50000];
+        public Portuse[] usage = new Portuse[50000];
         public string[][] OUI = new string[30000][];
 
 
@@ -123,6 +123,54 @@ namespace ManMon.Parser
 
         }
 
+        public void ReadCDPPorts()
+        {
+
+            for (int i = 0; i < hostinfo.Count(); i++)
+            {
+
+                if (string.Compare(hostinfo[i][1], "s") == 0 && string.Compare(hostinfo[i][4], "1") == 0)
+                {
+               
+                    string filename = hostinfo[i][0] + "_cdpdet.txt";
+                string[] lines = System.IO.File.ReadAllLines(@"output\cdpdet\" + filename);
+                string portname = null;
+                int notif = 0;
+
+                    foreach (string line in lines)
+                    {
+                        if (line.Contains("Interface:"))
+                        {
+                            if(line.Substring(11, line.IndexOf(",")).Contains("GigabitEthernet"))
+                            {
+                            
+                                if(line.Substring(11, line.IndexOf(",")).Contains("Ten"))
+                                {
+                                    portname = "Te" + line.Substring(29, (line.IndexOf(",")-29));
+                                    //GetPortIDbySwitchnameandPortname(hostinfo[i][0], portname);
+                                }
+                                else
+                                {
+                                    portname = "Gi" + line.Substring(26, (line.IndexOf(",")-26));
+                                }
+                            }
+
+                            if (line.Substring(11, line.IndexOf(",")).Contains("FastEthernet"))
+                            {
+                                    portname = "Fa" + line.Substring(23, (line.IndexOf(",")-23));
+                            }
+
+                            notif = SetPortCDPbyPortID(GetPortIDbySwitchnameandPortname(hostinfo[i][0], portname));
+
+                        }
+
+                    }
+                }
+            }
+
+
+        }
+
         public void ReadClients()
         {
             string macadd = null;
@@ -152,7 +200,38 @@ namespace ManMon.Parser
                             {
                                 macadd = line.Substring(8, 14).Trim();
 
+                                //if it isn't an access port, add a client and portentry
+                                if(GetUplinkbyPortID(GetPortIDbySwitchnameandPortname(hostinfo[i][0], line.Substring(38, (line.Length - 38)))) ==0)
+                                {
+                                    clients[nclients] = new Client();
+                                    clients[nclients].ID = nclients;
+                                    clients[nclients].MACadd = macadd;
+                                    oui = GetOUIbymac(macadd);
+                                    if (oui != " ")
+                                    {
+                                        clients[nclients].guesstimac = oui;
+                                    }
 
+
+                                    nclients++;
+
+                                    usage[nusage] = new Portuse();
+                                    usage[nusage].ID = nusage;
+                                    usage[nusage].ClientID = nclients - 1;
+                                    usage[nusage].PortID = GetPortIDbySwitchnameandPortname(hostinfo[i][0], line.Substring(38, (line.Length - 38)));
+                                    nusage++;
+
+
+                                }
+
+                                //is this an uplink?
+                                // CheckifPortisanUplink(hostinfo[i][0]
+
+
+
+
+
+                                /*
                                 if (nclients > 0)
                                 {
 
@@ -186,7 +265,8 @@ namespace ManMon.Parser
                                     clients[nclients].ID = nclients;
                                     clients[nclients].MACadd = macadd;
                                     nclients++;
-                                }
+                                }*/
+
                             }
 
                         }
@@ -302,6 +382,19 @@ namespace ManMon.Parser
             return -1;
         }
 
+        public int GetUplinkbyPortID(int portid)
+        {
+
+            foreach (Port port in ports)
+            {
+                if (port.ID == portid)
+                {
+                    return port.uplink;
+                }
+            }
+            return 0;
+        }
+
         public string GetOUIbymac(string macadd)
         {
             
@@ -316,6 +409,20 @@ namespace ManMon.Parser
             }
 
             return " ";
+        }
+
+        public int SetPortCDPbyPortID(int portid)
+        {
+
+            foreach (Port port in ports)
+            {
+                if (port.ID == portid)
+                {
+                    port.uplink = 1;
+                    return 0;
+                }
+            }
+            return 1;
         }
     }
 }

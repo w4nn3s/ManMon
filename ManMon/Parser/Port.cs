@@ -14,5 +14,6 @@ namespace ManMon.Parser
         public string PortDesc = null;
         public string Status = null;
         public string Vlan = null;
+        public int uplink = 0; //uplinks are tagged 1;
     }
 }

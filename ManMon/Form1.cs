@@ -145,7 +145,10 @@ namespace ManMon
             parser.ReadHosts();
             parser.ReadPorts();
             lblnswitches.Text = parser.nswitches.ToString() + " switches loaded";
+            parser.ReadCDPPorts();
             parser.ReadClients();
+
+           
 
             Array.Resize(ref parser.switches, parser.nswitches);
             Array.Resize(ref parser.ports, parser.nports);
@@ -155,7 +158,7 @@ namespace ManMon
             parser.AddIPs();
 
 
-
+            //GENERATE OUTPUT
             System.IO.StreamWriter file = new System.IO.StreamWriter(@"out.txt");
             for (int i = 1; i < parser.nclients; i++)
             {
