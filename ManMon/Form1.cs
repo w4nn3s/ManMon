@@ -94,7 +94,9 @@ namespace ManMon
                         startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                         Process.Start(startInfo);
                     }
+                    System.Threading.Thread.Sleep(1000);
                 }
+                System.Threading.Thread.Sleep(6500);
             }
 
 
@@ -117,6 +119,7 @@ namespace ManMon
                         startInfo.Arguments = user + " " + pass + " " + hostinfo[y][0] + " " + switchcmds[z] + " " + hostinfo[y][1];
                         startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                         Process.Start(startInfo);
+                        //System.Threading.Thread.Sleep(5000);
                     }
                 }
             }
@@ -160,7 +163,7 @@ namespace ManMon
 
             //GENERATE OUTPUT
             System.IO.StreamWriter file = new System.IO.StreamWriter(@"out.txt");
-            for (int i = 1; i < parser.nclients; i++)
+            for (int i = 0; i < parser.nclients; i++)
             {
                 String switchname = null;
                 String portname = null;
@@ -179,9 +182,9 @@ namespace ManMon
                 //Console.WriteLine(parser.clients[i].ID + " - " + parser.clients[i].MACadd + " --- " + parser.clients[i].IPadd + " --- " + parser.clients[i].guesstimac + " --- " + parser.switches[parser.ports[PortID].SwitchID].hostname + " --- " + parser.ports[PortID].Portnr );
                 //file.WriteLine(parser.clients[i].ID + " - " + parser.clients[i].MACadd + " \t " + parser.clients[i].IPadd + " \t " + parser.clients[i].guesstimac + " \t " + parser.switches[parser.ports[PortID].SwitchID].hostname + " \t " + parser.ports[PortID].Portnr);
                 file.WriteLine(CLIENTID + " - " + MACADD + " \t " + IP + " \t " + SWNAAM + " \t " + PORTNAME  + "\t\t" + OUI);
-
+                //Console.WriteLine(CLIENTID + " - " + MACADD + " \t " + IP + " \t " + SWNAAM + " \t " + PORTNAME + "\t\t" + OUI);
             }
-
+            file.Close();
 
 
 
