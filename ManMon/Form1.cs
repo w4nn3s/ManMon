@@ -162,6 +162,7 @@ namespace ManMon
 
 
             //GENERATE OUTPUT
+
             System.IO.StreamWriter file = new System.IO.StreamWriter(@"out.txt");
             for (int i = 0; i < parser.nclients; i++)
             {
