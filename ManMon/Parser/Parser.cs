@@ -40,7 +40,6 @@ namespace ManMon.Parser
                     OUI[nOUI][0] = line.Substring(0, 4).ToLower() + "." + line.Substring(4, 2).ToLower();
                     OUI[nOUI][1] = line.Substring(22, line.Length - 22);
                     nOUI++;
-                   // Console.WriteLine(OUI[nOUI][0] + " --- " + OUI[nOUI][1]);
                 }
             }
 
